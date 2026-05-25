@@ -13,7 +13,29 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["'Playfair Display'", "Georgia", "serif"],
+        sans: ["'Open Sans'", "system-ui", "sans-serif"],
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-accent": "var(--gradient-accent)",
+        "gradient-surface": "var(--gradient-surface)",
+      },
+      boxShadow: {
+        card: "var(--shadow-card)",
+        elegant: "var(--shadow-elegant)",
+        glow: "var(--shadow-glow)",
+      },
       colors: {
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

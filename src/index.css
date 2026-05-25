@@ -1,105 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* ============================================================
+   CLÍNICA EDGE+ · Design System
+   Paleta oficial: Azul Marinho Premium #003B7A, Turquesa Saúde #11B8B5,
+   Verde-Água #0E9F9A, Branco Clínico, Cinza Suave #F4F7F8, Azul Noite #1A2E4A
+   Todos os tokens em HSL.
+   ============================================================ */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Superfícies */
+    --background: 0 0% 100%;              /* Branco Clínico */
+    --foreground: 217 48% 20%;            /* Azul Noite #1A2E4A */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 217 48% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 217 48% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primário — Azul Marinho Premium #003B7A */
+    --primary: 211 100% 24%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 211 80% 38%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Acento — Turquesa Saúde #11B8B5 */
+    --accent: 179 83% 38%;
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Secundário — Verde-Água #0E9F9A */
+    --secondary: 178 84% 34%;
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Cinza Suave #F4F7F8 */
+    --muted: 200 20% 96%;
+    --muted-foreground: 0 0% 43%;          /* Cinza Texto #6E6E6E */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 142 71% 35%;
+    --success-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --warning: 38 92% 50%;
+    --warning-foreground: 217 48% 20%;
 
-    --sidebar-background: 0 0% 98%;
+    --border: 200 18% 89%;
+    --input: 200 18% 89%;
+    --ring: 211 100% 24%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --radius: 0.625rem;
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, hsl(211 100% 24%), hsl(178 84% 34%));
+    --gradient-accent: linear-gradient(135deg, hsl(179 83% 38%), hsl(178 84% 34%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(200 20% 96%));
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Sombras EDGE+ */
+    --shadow-sm: 0 1px 2px 0 hsl(217 48% 20% / 0.04);
+    --shadow-card: 0 4px 16px -4px hsl(211 100% 24% / 0.08);
+    --shadow-elegant: 0 10px 30px -10px hsl(211 100% 24% / 0.25);
+    --shadow-glow: 0 0 32px hsl(179 83% 38% / 0.25);
 
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar — Azul Marinho premium */
+    --sidebar-background: 211 100% 24%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 179 83% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 211 70% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 211 60% 35%;
+    --sidebar-ring: 179 83% 38%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 217 48% 8%;
+    --foreground: 0 0% 98%;
+    --card: 217 48% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 217 48% 12%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 179 83% 45%;
+    --primary-foreground: 217 48% 12%;
+    --accent: 179 83% 45%;
+    --accent-foreground: 217 48% 12%;
+    --secondary: 178 60% 28%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 217 30% 18%;
+    --muted-foreground: 200 15% 70%;
+    --border: 217 30% 22%;
+    --input: 217 30% 22%;
+    --ring: 179 83% 45%;
+    --sidebar-background: 217 50% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 179 83% 45%;
+    --sidebar-primary-foreground: 217 48% 12%;
+    --sidebar-accent: 217 40% 18%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 217 40% 18%;
+    --sidebar-ring: 179 83% 45%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-feature-settings: 'cv02','cv03','cv04','cv11';
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.01em;
   }
 }
