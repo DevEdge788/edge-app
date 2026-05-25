@@ -14,16 +14,437 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          channel: string | null
+          created_at: string
+          created_by: string | null
+          ends_at: string
+          id: string
+          notes: string | null
+          patient_id: string
+          professional_id: string
+          room_id: string | null
+          specialty_id: string | null
+          starts_at: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+        }
+        Insert: {
+          channel?: string | null
+          created_at?: string
+          created_by?: string | null
+          ends_at: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          professional_id: string
+          room_id?: string | null
+          specialty_id?: string | null
+          starts_at: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+        }
+        Update: {
+          channel?: string | null
+          created_at?: string
+          created_by?: string | null
+          ends_at?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          professional_id?: string
+          room_id?: string | null
+          specialty_id?: string | null
+          starts_at?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_specialty_id_fkey"
+            columns: ["specialty_id"]
+            isOneToOne: false
+            referencedRelation: "specialties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          address: string | null
+          birth_date: string | null
+          city: string | null
+          clinical_notes: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          gender: Database["public"]["Enums"]["gender"] | null
+          id: string
+          is_active: boolean
+          phone: string | null
+          postal_code: string | null
+          tax_number: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
+          clinical_notes?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          gender?: Database["public"]["Enums"]["gender"] | null
+          id?: string
+          is_active?: boolean
+          phone?: string | null
+          postal_code?: string | null
+          tax_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
+          clinical_notes?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          gender?: Database["public"]["Enums"]["gender"] | null
+          id?: string
+          is_active?: boolean
+          phone?: string | null
+          postal_code?: string | null
+          tax_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      procedure_catalog: {
+        Row: {
+          base_price: number
+          code: string
+          commission_pct: number
+          created_at: string
+          duration_minutes: number
+          id: string
+          is_active: boolean
+          name: string
+          specialty_id: string | null
+        }
+        Insert: {
+          base_price?: number
+          code: string
+          commission_pct?: number
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          specialty_id?: string | null
+        }
+        Update: {
+          base_price?: number
+          code?: string
+          commission_pct?: number
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          specialty_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procedure_catalog_specialty_id_fkey"
+            columns: ["specialty_id"]
+            isOneToOne: false
+            referencedRelation: "specialties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procedures: {
+        Row: {
+          amount: number
+          appointment_id: string
+          catalog_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          payment_method: Database["public"]["Enums"]["payment_method"] | null
+          status: Database["public"]["Enums"]["procedure_status"]
+          tooth: string | null
+        }
+        Insert: {
+          amount?: number
+          appointment_id: string
+          catalog_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          status?: Database["public"]["Enums"]["procedure_status"]
+          tooth?: string | null
+        }
+        Update: {
+          amount?: number
+          appointment_id?: string
+          catalog_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          status?: Database["public"]["Enums"]["procedure_status"]
+          tooth?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procedures_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procedures_catalog_id_fkey"
+            columns: ["catalog_id"]
+            isOneToOne: false
+            referencedRelation: "procedure_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals: {
+        Row: {
+          agenda_color: string | null
+          commission_pct: number
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          is_active: boolean
+          license_number: string | null
+          phone: string | null
+          specialty_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          agenda_color?: string | null
+          commission_pct?: number
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          is_active?: boolean
+          license_number?: string | null
+          phone?: string | null
+          specialty_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          agenda_color?: string | null
+          commission_pct?: number
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          is_active?: boolean
+          license_number?: string | null
+          phone?: string | null
+          specialty_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professionals_specialty_id_fkey"
+            columns: ["specialty_id"]
+            isOneToOne: false
+            referencedRelation: "specialties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          first_name: string | null
+          id: string
+          is_active: boolean
+          last_name: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          first_name?: string | null
+          id: string
+          is_active?: boolean
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rooms: {
+        Row: {
+          capacity: number
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          room_type: string | null
+        }
+        Insert: {
+          capacity?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          room_type?: string | null
+        }
+        Update: {
+          capacity?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          room_type?: string | null
+        }
+        Relationships: []
+      }
+      specialties: {
+        Row: {
+          color: string
+          created_at: string
+          display_order: number
+          icon: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "rececionista" | "medico" | "paciente"
+      appointment_status:
+        | "agendada"
+        | "confirmada"
+        | "em_curso"
+        | "concluida"
+        | "cancelada"
+        | "faltou"
+      gender: "feminino" | "masculino" | "outro" | "nao_especificado"
+      payment_method:
+        | "numerario"
+        | "multibanco"
+        | "mbway"
+        | "cartao"
+        | "transferencia"
+        | "seguro"
+        | "outro"
+      procedure_status:
+        | "planeado"
+        | "em_curso"
+        | "concluido"
+        | "faturado"
+        | "cancelado"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +571,33 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "rececionista", "medico", "paciente"],
+      appointment_status: [
+        "agendada",
+        "confirmada",
+        "em_curso",
+        "concluida",
+        "cancelada",
+        "faltou",
+      ],
+      gender: ["feminino", "masculino", "outro", "nao_especificado"],
+      payment_method: [
+        "numerario",
+        "multibanco",
+        "mbway",
+        "cartao",
+        "transferencia",
+        "seguro",
+        "outro",
+      ],
+      procedure_status: [
+        "planeado",
+        "em_curso",
+        "concluido",
+        "faturado",
+        "cancelado",
+      ],
+    },
   },
 } as const
