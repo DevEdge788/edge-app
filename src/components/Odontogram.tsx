@@ -8,7 +8,7 @@ const LOWER_RIGHT = [48, 47, 46, 45, 44, 43, 42, 41];
 
 export type ToothState = {
   count: number;
-  status?: "planeado" | "em_execucao" | "concluido" | "cancelado";
+  status?: "planeado" | "em_curso" | "concluido" | "cancelado";
 };
 
 interface OdontogramProps {
@@ -19,7 +19,7 @@ interface OdontogramProps {
 
 const statusFill: Record<string, string> = {
   planeado: "fill-warning/30 stroke-warning",
-  em_execucao: "fill-accent/30 stroke-accent",
+  em_curso: "fill-accent/30 stroke-accent",
   concluido: "fill-success/30 stroke-success",
   cancelado: "fill-destructive/20 stroke-destructive",
 };

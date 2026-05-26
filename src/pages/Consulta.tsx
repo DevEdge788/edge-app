@@ -37,7 +37,7 @@ type CatalogItem = {
 type Procedure = {
   id: string;
   tooth: string | null;
-  status: "planeado" | "em_execucao" | "concluido" | "cancelado";
+  status: "planeado" | "em_curso" | "concluido" | "cancelado";
   amount: number;
   notes: string | null;
   payment_method: string | null;
@@ -46,7 +46,7 @@ type Procedure = {
 
 const statusOptions = [
   { value: "planeado", label: "Planeado" },
-  { value: "em_execucao", label: "Em execução" },
+  { value: "em_curso", label: "Em curso" },
   { value: "concluido", label: "Concluído" },
   { value: "cancelado", label: "Cancelado" },
 ];
@@ -120,8 +120,8 @@ export default function Consulta() {
       if (!p.tooth) continue;
       const cur = map[p.tooth] ?? { count: 0 };
       cur.count += 1;
-      // priority: em_execucao > planeado > concluido > cancelado
-      const priority = { em_execucao: 4, planeado: 3, concluido: 2, cancelado: 1 } as const;
+      // priority: em_curso > planeado > concluido > cancelado
+      const priority = { em_curso: 4, planeado: 3, concluido: 2, cancelado: 1 } as const;
       if (!cur.status || priority[p.status] > priority[cur.status]) cur.status = p.status;
       map[p.tooth] = cur;
     }
