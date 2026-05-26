@@ -11,6 +11,7 @@ import Agenda from "@/pages/Agenda";
 import Pacientes from "@/pages/Pacientes";
 import Profissionais from "@/pages/Profissionais";
 import Marcacoes from "@/pages/Marcacoes";
+import Consulta from "@/pages/Consulta";
 import Placeholder from "@/pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -31,7 +32,7 @@ const App = () => (
               <Route path="/pacientes" element={<Pacientes />} />
               <Route path="/profissionais" element={<Profissionais />} />
               <Route path="/marcacoes" element={<Marcacoes />} />
-              <Route path="/consulta" element={<Placeholder title="Consulta Clínica" description="Registo de procedimentos e odontograma (Fase 3)." />} />
+              <Route path="/consulta" element={<Consulta />} />
               <Route path="/catalogo" element={<Placeholder title="Catálogo Clínico" description="Códigos de atos, preços e comissões (Fase 5)." />} />
               <Route path="/caixa" element={<Placeholder title="Caixa & Faturação" description="Pagamentos, faturação e caixa diária (Fase 4/5)." />} />
               <Route path="/relatorios" element={<Placeholder title="Relatórios" description="Indicadores financeiros e clínicos (Fase 5)." />} />
