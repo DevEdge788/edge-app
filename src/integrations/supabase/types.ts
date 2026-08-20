@@ -17,6 +17,7 @@ export type Database = {
       appointments: {
         Row: {
           channel: string | null
+          checked_in_at: string | null
           created_at: string
           created_by: string | null
           ends_at: string
@@ -32,6 +33,7 @@ export type Database = {
         }
         Insert: {
           channel?: string | null
+          checked_in_at?: string | null
           created_at?: string
           created_by?: string | null
           ends_at: string
@@ -47,6 +49,7 @@ export type Database = {
         }
         Update: {
           channel?: string | null
+          checked_in_at?: string | null
           created_at?: string
           created_by?: string | null
           ends_at?: string
@@ -87,6 +90,117 @@ export type Database = {
             columns: ["specialty_id"]
             isOneToOne: false
             referencedRelation: "specialties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_items: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          procedure_id: string | null
+          quantity: number
+          total: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          procedure_id?: string | null
+          quantity?: number
+          total?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          procedure_id?: string | null
+          quantity?: number
+          total?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoice_items_procedure_id_fkey"
+            columns: ["procedure_id"]
+            isOneToOne: false
+            referencedRelation: "procedures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by: string | null
+          discount: number
+          id: string
+          issued_at: string
+          notes: string | null
+          number: string
+          patient_id: string
+          status: Database["public"]["Enums"]["invoice_status"]
+          subtotal: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          discount?: number
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number?: string
+          patient_id: string
+          status?: Database["public"]["Enums"]["invoice_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          discount?: number
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number?: string
+          patient_id?: string
+          status?: Database["public"]["Enums"]["invoice_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
             referencedColumns: ["id"]
           },
         ]
@@ -144,6 +258,47 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          invoice_id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          notes: string | null
+          paid_at: string
+          received_by: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          notes?: string | null
+          paid_at?: string
+          received_by?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          notes?: string | null
+          paid_at?: string
+          received_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       procedure_catalog: {
         Row: {
@@ -431,6 +586,7 @@ export type Database = {
         | "cancelada"
         | "faltou"
       gender: "feminino" | "masculino" | "outro" | "nao_especificado"
+      invoice_status: "rascunho" | "emitida" | "paga" | "anulada"
       payment_method:
         | "numerario"
         | "multibanco"
@@ -582,6 +738,7 @@ export const Constants = {
         "faltou",
       ],
       gender: ["feminino", "masculino", "outro", "nao_especificado"],
+      invoice_status: ["rascunho", "emitida", "paga", "anulada"],
       payment_method: [
         "numerario",
         "multibanco",

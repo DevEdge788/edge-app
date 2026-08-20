@@ -19,6 +19,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
       { title: "Agenda", url: "/agenda", icon: Calendar },
       { title: "Pacientes", url: "/pacientes", icon: Users },
       { title: "Profissionais", url: "/profissionais", icon: Stethoscope },
+      { title: "Receção", url: "/recepcao", icon: ClipboardList },
     ]},
     { label: "Gestão", items: [
       { title: "Caixa & Faturação", url: "/caixa", icon: Wallet },
@@ -32,6 +33,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
       { title: "Painel", url: "/", icon: LayoutDashboard },
       { title: "Agenda", url: "/agenda", icon: Calendar },
       { title: "Pacientes", url: "/pacientes", icon: Users },
+      { title: "Receção", url: "/recepcao", icon: ClipboardList },
       { title: "Caixa", url: "/caixa", icon: Wallet },
       { title: "Lembretes", url: "/lembretes", icon: Bell },
     ]},
