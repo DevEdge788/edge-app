@@ -55,7 +55,7 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
     (async () => {
       await loadRefs();
 
-      setRooms(rm.data ?? []);
+
 
       if (appointmentId) {
         const { data } = await supabase.from("appointments").select("*").eq("id", appointmentId).maybeSingle();
