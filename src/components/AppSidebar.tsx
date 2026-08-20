@@ -23,6 +23,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
     ]},
     { label: "Gestão", items: [
       { title: "Caixa & Faturação", url: "/caixa", icon: Wallet },
+      { title: "Lembretes", url: "/lembretes", icon: Bell },
       { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
       { title: "Catálogo Clínico", url: "/catalogo", icon: ClipboardList },
       { title: "Configurações", url: "/configuracoes", icon: Settings },

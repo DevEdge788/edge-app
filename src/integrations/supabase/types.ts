@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointment_confirmations: {
+        Row: {
+          appointment_id: string
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at: string
+          id: string
+          responded_at: string | null
+          response_source: string | null
+          sent_at: string
+          status: Database["public"]["Enums"]["confirmation_status"]
+          token: string
+        }
+        Insert: {
+          appointment_id: string
+          channel: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          id?: string
+          responded_at?: string | null
+          response_source?: string | null
+          sent_at?: string
+          status?: Database["public"]["Enums"]["confirmation_status"]
+          token?: string
+        }
+        Update: {
+          appointment_id?: string
+          channel?: Database["public"]["Enums"]["notification_channel"]
+          created_at?: string
+          id?: string
+          responded_at?: string | null
+          response_source?: string | null
+          sent_at?: string
+          status?: Database["public"]["Enums"]["confirmation_status"]
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_confirmations_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           channel: string | null
@@ -198,6 +242,76 @@ export type Database = {
           },
           {
             foreignKeyName: "invoices_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_logs: {
+        Row: {
+          appointment_id: string | null
+          channel: Database["public"]["Enums"]["notification_channel"]
+          confirmation_id: string | null
+          content: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          metadata: Json
+          patient_id: string | null
+          provider: string
+          recipient: string | null
+          status: Database["public"]["Enums"]["notification_status"]
+          template: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          channel: Database["public"]["Enums"]["notification_channel"]
+          confirmation_id?: string | null
+          content?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json
+          patient_id?: string | null
+          provider?: string
+          recipient?: string | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          template?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          channel?: Database["public"]["Enums"]["notification_channel"]
+          confirmation_id?: string | null
+          content?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json
+          patient_id?: string | null
+          provider?: string
+          recipient?: string | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          template?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_logs_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_logs_confirmation_id_fkey"
+            columns: ["confirmation_id"]
+            isOneToOne: false
+            referencedRelation: "appointment_confirmations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_logs_patient_id_fkey"
             columns: ["patient_id"]
             isOneToOne: false
             referencedRelation: "patients"
@@ -585,8 +699,11 @@ export type Database = {
         | "concluida"
         | "cancelada"
         | "faltou"
+      confirmation_status: "pendente" | "confirmada" | "recusada" | "reagendar"
       gender: "feminino" | "masculino" | "outro" | "nao_especificado"
       invoice_status: "rascunho" | "emitida" | "paga" | "anulada"
+      notification_channel: "sms" | "whatsapp" | "email"
+      notification_status: "simulado" | "enviado" | "falhado"
       payment_method:
         | "numerario"
         | "multibanco"
@@ -737,8 +854,11 @@ export const Constants = {
         "cancelada",
         "faltou",
       ],
+      confirmation_status: ["pendente", "confirmada", "recusada", "reagendar"],
       gender: ["feminino", "masculino", "outro", "nao_especificado"],
       invoice_status: ["rascunho", "emitida", "paga", "anulada"],
+      notification_channel: ["sms", "whatsapp", "email"],
+      notification_status: ["simulado", "enviado", "falhado"],
       payment_method: [
         "numerario",
         "multibanco",
