@@ -130,25 +130,41 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label>Paciente</Label>
-            <Select value={patientId} onValueChange={setPatientId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar paciente" /></SelectTrigger>
-              <SelectContent>{patients.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={patientId} onValueChange={setPatientId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar paciente" /></SelectTrigger>
+                <SelectContent>{patients.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo paciente" title="Novo paciente" onClick={() => setQuick("patient")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
             <Label>Profissional</Label>
-            <Select value={professionalId} onValueChange={setProfessionalId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
-              <SelectContent>{professionals.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={professionalId} onValueChange={setProfessionalId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectContent>{professionals.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo profissional" title="Novo profissional" onClick={() => setQuick("professional")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
             <Label>Especialidade</Label>
-            <Select value={specialtyId} onValueChange={setSpecialtyId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
-              <SelectContent>{specialties.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={specialtyId} onValueChange={setSpecialtyId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectContent>{specialties.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Nova especialidade" title="Nova especialidade" onClick={() => setQuick("specialty")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+
           <div className="space-y-2">
             <Label>Data</Label>
             <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
