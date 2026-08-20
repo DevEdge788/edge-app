@@ -12,6 +12,8 @@ import Pacientes from "@/pages/Pacientes";
 import Profissionais from "@/pages/Profissionais";
 import Marcacoes from "@/pages/Marcacoes";
 import Consulta from "@/pages/Consulta";
+import Recepcao from "@/pages/Recepcao";
+import Caixa from "@/pages/Caixa";
 import Placeholder from "@/pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
