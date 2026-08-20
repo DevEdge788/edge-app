@@ -233,6 +233,23 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
           </Button>
         </DialogFooter>
       </DialogContent>
+      {quick && (
+        <QuickCreateDialog
+          open={!!quick}
+          onOpenChange={(v) => !v && setQuick(null)}
+          entity={quick}
+          onCreated={async (id) => {
+            const entity = quick;
+            setQuick(null);
+            await loadRefs();
+            if (entity === "patient") setPatientId(id);
+            if (entity === "professional") setProfessionalId(id);
+            if (entity === "specialty") setSpecialtyId(id);
+            if (entity === "room") setRoomId(id);
+          }}
+        />
+      )}
     </Dialog>
+
   );
 }
