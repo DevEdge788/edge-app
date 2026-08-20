@@ -35,8 +35,9 @@ const App = () => (
               <Route path="/profissionais" element={<Profissionais />} />
               <Route path="/marcacoes" element={<Marcacoes />} />
               <Route path="/consulta" element={<Consulta />} />
+              <Route path="/recepcao" element={<Recepcao />} />
+              <Route path="/caixa" element={<Caixa />} />
               <Route path="/catalogo" element={<Placeholder title="Catálogo Clínico" description="Códigos de atos, preços e comissões (Fase 5)." />} />
-              <Route path="/caixa" element={<Placeholder title="Caixa & Faturação" description="Pagamentos, faturação e caixa diária (Fase 4/5)." />} />
               <Route path="/relatorios" element={<Placeholder title="Relatórios" description="Indicadores financeiros e clínicos (Fase 5)." />} />
               <Route path="/lembretes" element={<Placeholder title="Lembretes" description="SMS, WhatsApp e email (Fase 6)." />} />
               <Route path="/configuracoes" element={<Placeholder title="Configurações" description="Especialidades, salas e permissões." />} />
