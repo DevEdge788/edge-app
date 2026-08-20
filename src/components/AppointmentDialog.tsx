@@ -6,7 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Plus } from "lucide-react";
+import { QuickCreateDialog, type QuickCreateEntity } from "@/components/QuickCreateDialog";
 import { toast } from "sonner";
+
 
 interface Props {
   open: boolean;
@@ -32,20 +35,27 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
   const [duration, setDuration] = useState(30);
   const [status, setStatus] = useState<string>("agendada");
   const [notes, setNotes] = useState("");
+  const [quick, setQuick] = useState<QuickCreateEntity | null>(null);
+
+  async function loadRefs() {
+    const [p, pr, sp, rm] = await Promise.all([
+      supabase.from("patients").select("id, full_name").eq("is_active", true).order("full_name"),
+      supabase.from("professionals").select("id, full_name, specialty_id").eq("is_active", true).order("full_name"),
+      supabase.from("specialties").select("id, name").eq("is_active", true).order("display_order"),
+      supabase.from("rooms").select("id, name").eq("is_active", true).order("name"),
+    ]);
+    setPatients(p.data ?? []);
+    setProfessionals(pr.data ?? []);
+    setSpecialties(sp.data ?? []);
+    setRooms(rm.data ?? []);
+  }
 
   useEffect(() => {
     if (!open) return;
     (async () => {
-      const [p, pr, sp, rm] = await Promise.all([
-        supabase.from("patients").select("id, full_name").eq("is_active", true).order("full_name"),
-        supabase.from("professionals").select("id, full_name, specialty_id").eq("is_active", true).order("full_name"),
-        supabase.from("specialties").select("id, name").eq("is_active", true).order("display_order"),
-        supabase.from("rooms").select("id, name").eq("is_active", true).order("name"),
-      ]);
-      setPatients(p.data ?? []);
-      setProfessionals(pr.data ?? []);
-      setSpecialties(sp.data ?? []);
-      setRooms(rm.data ?? []);
+      await loadRefs();
+
+
 
       if (appointmentId) {
         const { data } = await supabase.from("appointments").select("*").eq("id", appointmentId).maybeSingle();
@@ -120,25 +130,41 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label>Paciente</Label>
-            <Select value={patientId} onValueChange={setPatientId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar paciente" /></SelectTrigger>
-              <SelectContent>{patients.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={patientId} onValueChange={setPatientId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar paciente" /></SelectTrigger>
+                <SelectContent>{patients.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo paciente" title="Novo paciente" onClick={() => setQuick("patient")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
             <Label>Profissional</Label>
-            <Select value={professionalId} onValueChange={setProfessionalId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
-              <SelectContent>{professionals.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={professionalId} onValueChange={setProfessionalId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectContent>{professionals.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo profissional" title="Novo profissional" onClick={() => setQuick("professional")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
             <Label>Especialidade</Label>
-            <Select value={specialtyId} onValueChange={setSpecialtyId}>
-              <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
-              <SelectContent>{specialties.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={specialtyId} onValueChange={setSpecialtyId}>
+                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectContent>{specialties.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Nova especialidade" title="Nova especialidade" onClick={() => setQuick("specialty")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+
           <div className="space-y-2">
             <Label>Data</Label>
             <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
@@ -153,28 +179,48 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
           </div>
           <div className="space-y-2">
             <Label>Sala</Label>
-            <Select value={roomId} onValueChange={setRoomId}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">— sem sala —</SelectItem>
-                {rooms.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={roomId} onValueChange={setRoomId}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">— sem sala —</SelectItem>
+                  {rooms.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo gabinete" title="Novo gabinete" onClick={() => setQuick("room")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>Estado</Label>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="agendada">Agendada</SelectItem>
-                <SelectItem value="confirmada">Confirmada</SelectItem>
-                <SelectItem value="em_curso">Em curso</SelectItem>
-                <SelectItem value="concluida">Concluída</SelectItem>
-                <SelectItem value="cancelada">Cancelada</SelectItem>
-                <SelectItem value="faltou">Faltou</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={status} onValueChange={setStatus}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="agendada">Agendada</SelectItem>
+                  <SelectItem value="confirmada">Confirmada</SelectItem>
+                  <SelectItem value="em_curso">Em curso</SelectItem>
+                  <SelectItem value="concluida">Concluída</SelectItem>
+                  <SelectItem value="cancelada">Cancelada</SelectItem>
+                  <SelectItem value="faltou">Faltou</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Novo estado"
+                title="Novo estado"
+                onClick={() => toast.info("Estados definidos pelo sistema", {
+                  description: "Para acrescentar um novo estado de marcação é necessária uma alteração na base de dados. Diga-nos qual quer criar.",
+                })}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+
           <div className="space-y-2 sm:col-span-2">
             <Label>Notas</Label>
             <Textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
@@ -187,6 +233,23 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
           </Button>
         </DialogFooter>
       </DialogContent>
+      {quick && (
+        <QuickCreateDialog
+          open={!!quick}
+          onOpenChange={(v) => !v && setQuick(null)}
+          entity={quick}
+          onCreated={async (id) => {
+            const entity = quick;
+            setQuick(null);
+            await loadRefs();
+            if (entity === "patient") setPatientId(id);
+            if (entity === "professional") setProfessionalId(id);
+            if (entity === "specialty") setSpecialtyId(id);
+            if (entity === "room") setRoomId(id);
+          }}
+        />
+      )}
     </Dialog>
+
   );
 }
