@@ -35,19 +35,26 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
   const [duration, setDuration] = useState(30);
   const [status, setStatus] = useState<string>("agendada");
   const [notes, setNotes] = useState("");
+  const [quick, setQuick] = useState<QuickCreateEntity | null>(null);
+
+  async function loadRefs() {
+    const [p, pr, sp, rm] = await Promise.all([
+      supabase.from("patients").select("id, full_name").eq("is_active", true).order("full_name"),
+      supabase.from("professionals").select("id, full_name, specialty_id").eq("is_active", true).order("full_name"),
+      supabase.from("specialties").select("id, name").eq("is_active", true).order("display_order"),
+      supabase.from("rooms").select("id, name").eq("is_active", true).order("name"),
+    ]);
+    setPatients(p.data ?? []);
+    setProfessionals(pr.data ?? []);
+    setSpecialties(sp.data ?? []);
+    setRooms(rm.data ?? []);
+  }
 
   useEffect(() => {
     if (!open) return;
     (async () => {
-      const [p, pr, sp, rm] = await Promise.all([
-        supabase.from("patients").select("id, full_name").eq("is_active", true).order("full_name"),
-        supabase.from("professionals").select("id, full_name, specialty_id").eq("is_active", true).order("full_name"),
-        supabase.from("specialties").select("id, name").eq("is_active", true).order("display_order"),
-        supabase.from("rooms").select("id, name").eq("is_active", true).order("name"),
-      ]);
-      setPatients(p.data ?? []);
-      setProfessionals(pr.data ?? []);
-      setSpecialties(sp.data ?? []);
+      await loadRefs();
+
       setRooms(rm.data ?? []);
 
       if (appointmentId) {
