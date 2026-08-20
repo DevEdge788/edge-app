@@ -179,28 +179,48 @@ export function AppointmentDialog({ open, onOpenChange, initialDate, appointment
           </div>
           <div className="space-y-2">
             <Label>Sala</Label>
-            <Select value={roomId} onValueChange={setRoomId}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">— sem sala —</SelectItem>
-                {rooms.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={roomId} onValueChange={setRoomId}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">— sem sala —</SelectItem>
+                  {rooms.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Button type="button" variant="outline" size="icon" aria-label="Novo gabinete" title="Novo gabinete" onClick={() => setQuick("room")}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>Estado</Label>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="agendada">Agendada</SelectItem>
-                <SelectItem value="confirmada">Confirmada</SelectItem>
-                <SelectItem value="em_curso">Em curso</SelectItem>
-                <SelectItem value="concluida">Concluída</SelectItem>
-                <SelectItem value="cancelada">Cancelada</SelectItem>
-                <SelectItem value="faltou">Faltou</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Select value={status} onValueChange={setStatus}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="agendada">Agendada</SelectItem>
+                  <SelectItem value="confirmada">Confirmada</SelectItem>
+                  <SelectItem value="em_curso">Em curso</SelectItem>
+                  <SelectItem value="concluida">Concluída</SelectItem>
+                  <SelectItem value="cancelada">Cancelada</SelectItem>
+                  <SelectItem value="faltou">Faltou</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Novo estado"
+                title="Novo estado"
+                onClick={() => toast.info("Estados definidos pelo sistema", {
+                  description: "Para acrescentar um novo estado de marcação é necessária uma alteração na base de dados. Diga-nos qual quer criar.",
+                })}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+
           <div className="space-y-2 sm:col-span-2">
             <Label>Notas</Label>
             <Textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
