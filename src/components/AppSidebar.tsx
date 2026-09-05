@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Calendar, Users, Stethoscope, ClipboardList,
-  Wallet, BarChart3, Settings, Bell, MessageSquare, FileHeart, LogOut,
+  Wallet, BarChart3, Settings, Bell, MessageSquare, FileHeart, LogOut, Clock,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -20,6 +20,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
       { title: "Pacientes", url: "/pacientes", icon: Users },
       { title: "Profissionais", url: "/profissionais", icon: Stethoscope },
       { title: "Receção", url: "/recepcao", icon: ClipboardList },
+      { title: "Relógio de Ponto", url: "/ponto", icon: Clock },
     ]},
     { label: "Gestão", items: [
       { title: "Caixa & Faturação", url: "/caixa", icon: Wallet },
@@ -37,6 +38,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
       { title: "Receção", url: "/recepcao", icon: ClipboardList },
       { title: "Caixa", url: "/caixa", icon: Wallet },
       { title: "Lembretes", url: "/lembretes", icon: Bell },
+      { title: "Relógio de Ponto", url: "/ponto", icon: Clock },
     ]},
   ],
   medico: [
@@ -45,6 +47,7 @@ const navByRole: Record<string, { label: string; items: { title: string; url: st
       { title: "Minha Agenda", url: "/agenda", icon: Calendar },
       { title: "Meus Pacientes", url: "/pacientes", icon: Users },
       { title: "Consulta", url: "/consulta", icon: FileHeart },
+      { title: "Relógio de Ponto", url: "/ponto", icon: Clock },
     ]},
   ],
   paciente: [
