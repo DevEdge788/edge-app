@@ -15,6 +15,7 @@ import Consulta from "@/pages/Consulta";
 import Recepcao from "@/pages/Recepcao";
 import Caixa from "@/pages/Caixa";
 import Lembretes from "@/pages/Lembretes";
+import RelogioPonto from "@/pages/RelogioPonto";
 import Placeholder from "@/pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +42,8 @@ const App = () => (
               <Route path="/catalogo" element={<Placeholder title="Catálogo Clínico" description="Códigos de atos, preços e comissões (Fase 5)." />} />
               <Route path="/relatorios" element={<Placeholder title="Relatórios" description="Indicadores financeiros e clínicos (Fase 5)." />} />
               <Route path="/lembretes" element={<Lembretes />} />
+              <Route path="/ponto" element={<RelogioPonto />} />
+
               <Route path="/configuracoes" element={<Placeholder title="Configurações" description="Especialidades, salas e permissões." />} />
               <Route path="/mensagens" element={<Placeholder title="Mensagens" />} />
               <Route path="/ficha" element={<Placeholder title="Ficha clínica" />} />
