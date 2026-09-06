@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { Clock, LogIn, LogOut } from "lucide-react";
+import { Clock, FileSpreadsheet, LogIn, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, usePrimaryRole } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { fmtDateShort, fmtTime, startOfDay } from "@/lib/format";
+import { exportPontoExcel } from "@/lib/exportPonto";
 
 type Entry = { id: string; clock_in: string; clock_out: string | null };
 
@@ -19,8 +20,10 @@ const fmtDuration = (ms: number) => {
 
 export default function RelogioPonto() {
   const { user } = useAuth();
+  const isAdmin = usePrimaryRole() === "admin";
   const [entries, setEntries] = useState<Entry[]>([]);
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -74,11 +77,30 @@ export default function RelogioPonto() {
     load();
   }
 
+  async function exportExcel() {
+    setExporting(true);
+    try {
+      const n = await exportPontoExcel(new Date());
+      toast({ title: "Excel exportado", description: `${n} registos do mês incluídos.` });
+    } catch (e: any) {
+      toast({ title: "Não foi possível exportar", description: e.message, variant: "destructive" });
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-semibold">Relógio de Ponto</h1>
-        <p className="text-sm text-muted-foreground">{fmtDateShort(now)} · registos de hoje</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-2xl font-semibold">Relógio de Ponto</h1>
+          <p className="text-sm text-muted-foreground">{fmtDateShort(now)} · registos de hoje</p>
+        </div>
+        {isAdmin && (
+          <Button variant="outline" onClick={exportExcel} disabled={exporting}>
+            <FileSpreadsheet className="mr-2 h-4 w-4" /> {exporting ? "A exportar..." : "Exportar Excel"}
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
