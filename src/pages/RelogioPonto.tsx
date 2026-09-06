@@ -20,8 +20,10 @@ const fmtDuration = (ms: number) => {
 
 export default function RelogioPonto() {
   const { user } = useAuth();
+  const isAdmin = usePrimaryRole() === "admin";
   const [entries, setEntries] = useState<Entry[]>([]);
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
