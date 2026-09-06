@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { Clock, LogIn, LogOut } from "lucide-react";
+import { Clock, FileSpreadsheet, LogIn, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, usePrimaryRole } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { fmtDateShort, fmtTime, startOfDay } from "@/lib/format";
+import { exportPontoExcel } from "@/lib/exportPonto";
 
 type Entry = { id: string; clock_in: string; clock_out: string | null };
 
