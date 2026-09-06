@@ -74,11 +74,30 @@ export default function RelogioPonto() {
     load();
   }
 
+  async function exportExcel() {
+    setExporting(true);
+    try {
+      const n = await exportPontoExcel(new Date());
+      toast({ title: "Excel exportado", description: `${n} registos do mês incluídos.` });
+    } catch (e: any) {
+      toast({ title: "Não foi possível exportar", description: e.message, variant: "destructive" });
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-semibold">Relógio de Ponto</h1>
-        <p className="text-sm text-muted-foreground">{fmtDateShort(now)} · registos de hoje</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-2xl font-semibold">Relógio de Ponto</h1>
+          <p className="text-sm text-muted-foreground">{fmtDateShort(now)} · registos de hoje</p>
+        </div>
+        {isAdmin && (
+          <Button variant="outline" onClick={exportExcel} disabled={exporting}>
+            <FileSpreadsheet className="mr-2 h-4 w-4" /> {exporting ? "A exportar..." : "Exportar Excel"}
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
